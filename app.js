@@ -5,21 +5,27 @@ const { db, Page, User } = require("./models");
 
 //local requires
 const views = require("./views/index.js");
+const wikiRouter = require("./routes/wiki");
+const userRouter = require("./routes/users");
 
 const app = express();
 
 app.use(morgan("dev"));
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
+app.use("/wiki", wikiRouter);
 
 db.authenticate().then(() => {
   console.log("connected to the database");
 });
 
 app.get("/", (req, res) => {
-  const main = views.main();
-  res.send(main);
+  res.redirect("/wiki");
 });
+// app.get("/", (req, res) => {
+//   const view = views.main();
+//   res.send(view);
+// });
 
 const PORT = 3000;
 
